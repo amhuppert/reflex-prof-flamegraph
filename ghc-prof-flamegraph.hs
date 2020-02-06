@@ -15,7 +15,7 @@ import           System.FilePath ((</>), replaceExtension)
 import           System.IO (stderr, stdout, hPutStrLn, hPutStr, hGetContents, IOMode(..), hClose, openFile)
 import           System.Process (proc, createProcess, CreateProcess(..), StdStream(..), waitForProcess)
 
-import Paths_ghc_prof_flamegraph (getDataDir)
+import Paths_reflex_prof_flamegraph (getDataDir)
 
 data Options = Options
   { optionsProfFile        :: Maybe FilePath

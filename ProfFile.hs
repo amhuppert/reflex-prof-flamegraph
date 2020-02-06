@@ -54,14 +54,16 @@ parseLine s = case words s of
     -- The implementation is not very efficient, but I suppose this is not
     -- performance-critical.
     dropSRC :: [String] -> Either String [String]
-    dropSRC (('(':_):rest) = Right $ go 1 rest
+    dropSRC (w0@('(':_):rest) = Right $ go (getParenDiff w0) rest
       where
         go 0 ws = ws
-        go parenCount (w:ws) =
-          let numOpeningParens = length $ filter (== '(') w
-              numClosingParens = length $ filter (== ')') w
-           in go (parenCount + numOpeningParens - numClosingParens) ws
+        go parenCount (w:ws) = go (parenCount + getParenDiff w) ws
         go _ [] = []
+        --
+        getParenDiff str =
+          let numOpeningParens = length $ filter (== '(') str
+              numClosingParens = length $ filter (== ')') str
+           in numOpeningParens - numClosingParens
     dropSRC _ = Left "Expected SRC field to start with '('"
 
     parse' :: String -> String -> String -> Either String ([Line] -> Line)
